@@ -1,0 +1,14 @@
+Prefix: '&7[&bEasterEggs&7]'
+CommandPermission: eastereggs.admin
+TopCommandPermission: eastereggs.top
+TopValue: 10
+TopChatFormat: '%prefix% &f%place%&7. &c%player% &7Eggs Found: &f%eggs%'
+FinalCommandsEnabled: false
+FinalCommands:
+- say &e%player% &7found every egg!
+EggFoundAnimation:
+  Firework: false
+Messages:
+  Enabled: false
+  Claimed: '%prefix% &aYou claimed this egg!'
+  AlreadyClaimed: '%prefix% &cYou already claimed this egg!'

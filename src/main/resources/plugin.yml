@@ -1,0 +1,7 @@
+name: EasterEggs
+author: Phloxz
+version: 0.2.0
+main: EasterEggs.Main
+
+commands:
+  eastereggs:

@@ -248,19 +248,23 @@ public class EggHandler implements Listener
     
     @EventHandler
     public void breakEggs(final BlockBreakEvent e) {
-        final Player player = e.getPlayer();
-        if (player.hasPermission(Main.getInstance().getCommandPermission())) {
-            final Location location = e.getBlock().getLocation();
-            EggLocation eggLocation = null;
-            for (final EggLocation egg : EggHandler.availableEggs) {
-                if (egg.getBlock().getLocation().equals((Object)location)) {
-                    eggLocation = egg;
-                }
+        Material blockMaterial = e.getBlock().getType();
+        if (blockMaterial != Material.PLAYER_HEAD && blockMaterial != Material.PLAYER_WALL_HEAD && blockMaterial != Material.LEGACY_SKULL) {
+            return;
+        }
+        final Location location = e.getBlock().getLocation();
+        EggLocation eggLocation = null;
+        for (final EggLocation egg : EggHandler.availableEggs) {
+            if (egg.getBlock().getLocation().equals((Object) location)) {
+                eggLocation = egg;
             }
-            if (eggLocation == null) {
-                return;
-            }
-            if ((e.getBlock().getType() == Material.valueOf((EggHandler.versionId >= 13) ? "LEGACY_SKULL" : "SKULL") || eggLocation != null) && EggHandler.availableEggs.contains(eggLocation)) {
+        }
+        if (eggLocation == null) {
+            return;
+        }
+        if (EggHandler.availableEggs.contains(eggLocation)) {
+            final Player player = e.getPlayer();
+            if (player.hasPermission(Main.getInstance().getCommandPermission())) {
                 EggHandler.availableEggs.remove(eggLocation);
                 final List<String> eggLocations = (List<String>)Main.getInstance().getConfig().getStringList("EggLocations");
                 eggLocations.remove(eggLocation.getWorld().getName() + ":" + eggLocation.getBlockX() + ":" + eggLocation.getBlockY() + ":" + eggLocation.getBlockZ() + ":" + eggLocation.getCommand());
@@ -272,6 +276,10 @@ public class EggHandler implements Listener
                     loadPlayerEggs(onlinePlayer);
                 }
                 player.sendMessage(Main.getInstance().getPrefix() + " §aEgg has been removed!");
+            }
+            else {
+                player.sendMessage(Main.getInstance().getPrefix() + " §cSorry, you can't break that!");
+                e.setCancelled(true);
             }
         }
     }

@@ -1,6 +1,6 @@
 name: EasterEggs
 author: Phloxz
-version: 0.2.0
+version: 0.2.1
 main: EasterEggs.Main
 softdepend: [ PlaceholderAPI, Multiverse-Core ]
 api-version: 1.13

@@ -1,6 +1,6 @@
 name: EasterEggs
 author: Phloxz
-version: 0.2.1
+version: 0.2.2
 main: EasterEggs.Main
 softdepend: [ PlaceholderAPI, Multiverse-Core ]
 api-version: 1.13
@@ -12,6 +12,8 @@ commands:
 permissions:
   eastereggs.admin:
     default: op
+  eastereggs.collect:
+    default: true
   eastereggs.top:
     default: true
 

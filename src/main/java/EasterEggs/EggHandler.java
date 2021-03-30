@@ -168,6 +168,13 @@ public class EggHandler implements Listener
             if (eggLocation == null) {
                 return;
             }
+
+
+            if (!player.hasPermission(Main.getInstance().getCollectPermission())) {
+                player.sendMessage(Main.getInstance().getNoCollectPermissionMessage());
+                return;
+            }
+
             final File playerFolder = new File(Main.getInstance().getDataFolder(), "playerEggs/" + player.getUniqueId().toString());
             final FileConfiguration playerConfiguration = YamlConfiguration.loadConfiguration(playerFolder);
             if (EggHandler.unclaimedEggs.get(player).contains(eggLocation)) {

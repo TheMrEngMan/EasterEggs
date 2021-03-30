@@ -13,6 +13,7 @@ public class Main extends JavaPlugin
     private static Main m;
     private String prefix;
     private String commandPermission;
+    private String collectPermission;
     private String topCommandPermission;
     private String topChatFormat;
     private int topValue;
@@ -21,6 +22,7 @@ public class Main extends JavaPlugin
     private boolean messagesEnabled;
     private String claimedMessage;
     private String alreadyClaimedMessage;
+    private String noCollectPermissionMessage;
     private List<String> enabledAnimations;
     
     public void onEnable() {
@@ -49,6 +51,7 @@ public class Main extends JavaPlugin
         this.getConfig().addDefault("Messages.Enabled", false);
         this.getConfig().addDefault("Messages.Claimed", "%prefix% &aYou claimed this egg!");
         this.getConfig().addDefault("Messages.AlreadyClaimed", "%prefix% &cYou already claimed this egg!");
+        this.getConfig().addDefault("Messages.NoCollectPermission", "%prefix% &cSorry, the egg hunt has not started yet!");
         if (startup) {
             this.saveConfig();
         }
@@ -59,12 +62,14 @@ public class Main extends JavaPlugin
         this.messagesEnabled = this.getConfig().getBoolean("Messages.Enabled");
         this.claimedMessage = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("Messages.Claimed"));
         this.alreadyClaimedMessage = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("Messages.AlreadyClaimed"));
+        this.noCollectPermissionMessage = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("Messages.NoCollectPermission"));
         this.prefix = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("Prefix"));
         this.topChatFormat = this.getConfig().getString("TopChatFormat");
         this.topValue = this.getConfig().getInt("TopValue");
         this.finalCommandsEnabled = this.getConfig().getBoolean("FinalCommandsEnabled");
         this.finalCommands = this.getConfig().getStringList("FinalCommands");
         this.commandPermission = this.getConfig().getString("CommandPermission");
+        this.collectPermission = this.getConfig().getString("CollectPermission");
         this.topCommandPermission = this.getConfig().getString("TopCommandPermission");
         EggHandler.loadEggs();
     }
@@ -84,11 +89,19 @@ public class Main extends JavaPlugin
     public String getAlreadyClaimedMessage() {
         return this.alreadyClaimedMessage.replace("%prefix%", this.getPrefix());
     }
-    
+
+    public String getNoCollectPermissionMessage() {
+        return this.noCollectPermissionMessage.replace("%prefix%", this.getPrefix());
+    }
+
     public String getCommandPermission() {
         return this.commandPermission;
     }
-    
+
+    public String getCollectPermission() {
+        return this.collectPermission;
+    }
+
     public String getTopCommandPermission() {
         return this.topCommandPermission;
     }

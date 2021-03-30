@@ -1,5 +1,6 @@
 Prefix: '&7[&bEasterEggs&7]'
 CommandPermission: eastereggs.admin
+CollectPermission: eastereggs.collect
 TopCommandPermission: eastereggs.top
 TopValue: 10
 TopChatFormat: '%prefix% &f%place%&7. &c%player% &7Eggs Found: &f%eggs%'
@@ -12,3 +13,4 @@ Messages:
   Enabled: false
   Claimed: '%prefix% &aYou claimed this egg!'
   AlreadyClaimed: '%prefix% &cYou already claimed this egg!'
+  NoCollectPermission: '%prefix% &cSorry, the egg hunt has not started yet!'

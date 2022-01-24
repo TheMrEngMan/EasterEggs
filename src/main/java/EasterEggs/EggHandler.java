@@ -1,5 +1,6 @@
 package EasterEggs;
 
+import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.entity.*;
 import java.io.*;
 import org.bukkit.configuration.file.*;
@@ -19,9 +20,9 @@ public class EggHandler implements Listener
 {
     private static Map<Player, List<EggLocation>> unclaimedEggs;
     private static List<EggLocation> availableEggs;
-    private static Class<?> tileEntityClass;
-    private static Class<?> blockPositionClass;
-    private static int mcVersion;
+//    private static Class<?> tileEntityClass;
+//    private static Class<?> blockPositionClass;
+//    private static int mcVersion;
     private static int versionId;
     private final Map<String, Long> playerDelayTime;
     
@@ -31,25 +32,25 @@ public class EggHandler implements Listener
     
     public static void loadEggs() {
         EggHandler.availableEggs = new ArrayList<EggLocation>();
-        try {
-            final String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-            EggHandler.mcVersion = Integer.parseInt(version.replaceAll("[^0-9]", ""));
-            try {
-                EggHandler.tileEntityClass = Class.forName("net.minecraft.server." + version + ".TileEntitySkull");
-                if (EggHandler.mcVersion > 174) {
-                    EggHandler.blockPositionClass = Class.forName("net.minecraft.server." + version + ".BlockPosition");
-                }
-                else {
-                    EggHandler.blockPositionClass = null;
-                }
-            }
-            catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e2) {
-            e2.printStackTrace();
-        }
+//        try {
+//            final String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+//            EggHandler.mcVersion = Integer.parseInt(version.replaceAll("[^0-9]", ""));
+//            try {
+//                EggHandler.tileEntityClass = Class.forName("net.minecraft.server." + version + ".TileEntitySkull");
+//                if (EggHandler.mcVersion > 174) {
+//                    EggHandler.blockPositionClass = Class.forName("net.minecraft.server." + version + ".BlockPosition");
+//                }
+//                else {
+//                    EggHandler.blockPositionClass = null;
+//                }
+//            }
+//            catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        catch (Exception e2) {
+//            e2.printStackTrace();
+//        }
         final File playerFolders = new File(Main.getInstance().getDataFolder(), "playerEggs");
         if (!playerFolders.exists()) {
             playerFolders.mkdirs();
@@ -303,36 +304,37 @@ public class EggHandler implements Listener
             throw new IllegalArgumentException("Block must be a skull.");
         }
         try {
-            final GameProfile profile = new GameProfile(UUID.randomUUID(), (String)null);
-            profile.getProperties().put("textures", new Property("textures", texture));
-            final Object nmsWorld = block.getWorld().getClass().getMethod("getHandle", new Class[0]).invoke(block.getWorld());
-            Object tileEntity;
-            if (EggHandler.mcVersion <= 174) {
-                final Method getTileEntity = nmsWorld.getClass().getMethod("getTileEntity", Integer.TYPE, Integer.TYPE, Integer.TYPE);
-                tileEntity = EggHandler.tileEntityClass.cast(getTileEntity.invoke(nmsWorld, block.getX(), block.getY(), block.getZ()));
-            }
-            else {
-                final Method getTileEntity = nmsWorld.getClass().getMethod("getTileEntity", EggHandler.blockPositionClass);
-                tileEntity = EggHandler.tileEntityClass.cast(getTileEntity.invoke(nmsWorld, getBlockPositionFor(block.getX(), block.getY(), block.getZ())));
-            }
-            EggHandler.tileEntityClass.getMethod("setGameProfile", GameProfile.class).invoke(tileEntity, profile);
+            SkullCreator.blockWithBase64(block, texture);
+//            final GameProfile profile = new GameProfile(UUID.randomUUID(), (String)null);
+//            profile.getProperties().put("textures", new Property("textures", texture));
+//            final Object nmsWorld = block.getWorld().getClass().getMethod("getHandle", new Class[0]).invoke(block.getWorld());
+//            Object tileEntity;
+//            if (EggHandler.mcVersion <= 174) {
+//                final Method getTileEntity = nmsWorld.getClass().getMethod("getTileEntity", Integer.TYPE, Integer.TYPE, Integer.TYPE);
+//                tileEntity = EggHandler.tileEntityClass.cast(getTileEntity.invoke(nmsWorld, block.getX(), block.getY(), block.getZ()));
+//            }
+//            else {
+//                final Method getTileEntity = nmsWorld.getClass().getMethod("getTileEntity", EggHandler.blockPositionClass);
+//                tileEntity = EggHandler.tileEntityClass.cast(getTileEntity.invoke(nmsWorld, getBlockPositionFor(block.getX(), block.getY(), block.getZ())));
+//            }
+//            EggHandler.tileEntityClass.getMethod("setGameProfile", GameProfile.class).invoke(tileEntity, profile);
         }
         catch (Exception ex) {
             ex.printStackTrace();
         }
     }
     
-    private static Object getBlockPositionFor(final int x, final int y, final int z) {
-        Object blockPosition = null;
-        try {
-            final Constructor<?> cons = EggHandler.blockPositionClass.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
-            blockPosition = cons.newInstance(x, y, z);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return blockPosition;
-    }
+//    private static Object getBlockPositionFor(final int x, final int y, final int z) {
+//        Object blockPosition = null;
+//        try {
+//            final Constructor<?> cons = EggHandler.blockPositionClass.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
+//            blockPosition = cons.newInstance(x, y, z);
+//        }
+//        catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return blockPosition;
+//    }
     
     public static int getEggsFound(final Player player) {
         int eggs = -1;
